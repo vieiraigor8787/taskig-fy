@@ -1,11 +1,10 @@
 import Link from 'next/link'
 import localFont from 'next/font/local'
 import { Poppins } from 'next/font/google'
-
 import { Medal } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 
 const headingFont = localFont({
   src: '../../public/fonts/font.woff2',
@@ -30,7 +29,7 @@ const MarketingPage = () => {
           Número 1 em gerenciamento de tarefas
         </div>
         <h1 className="text-3xl md:text-6xl text-center text-neutral-800 mb-6">
-          TaskIg-fy ajuda seu time a
+          Taskig-Fy ajuda seu time a
         </h1>
         <div className="text-3xl md:text-6xl bg-gradient-to-r from-fuchsia-600 to-pink-600 text-white px-4 p-2 rounded-md w-fit">
           trabalhar para frente.
@@ -46,7 +45,7 @@ const MarketingPage = () => {
         office, o jeito que seu time trabalha é um só.
       </div>
 
-      <Button size="sm">
+      <Button className="mt-6" size="lg" asChild>
         <Link href="">Adquira gratuitamente</Link>
       </Button>
     </div>

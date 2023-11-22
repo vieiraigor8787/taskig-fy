@@ -3,7 +3,8 @@
 import { createBoard } from '@/actions/create-board'
 import { useAction } from '@/hooks/use-action'
 
-import { FormInput } from './form-input'
+import { FormInput } from '@/components/form/FormInput'
+
 import { FormButton } from './form-button'
 
 export const Form = () => {
@@ -18,7 +19,7 @@ export const Form = () => {
   return (
     <form action={onSubmit}>
       <div className="flex flex-col space-y-2">
-        <FormInput errors={fieldErrors} />
+        <FormInput id="title" errors={fieldErrors} />
       </div>
       <FormButton />
     </form>

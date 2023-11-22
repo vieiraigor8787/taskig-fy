@@ -8,6 +8,7 @@ const OrganizationIdPage = async () => {
 
   return (
     <div>
+      Nome do board:
       <Form />
       <div className="space-y-2">
         {boards.map((board) => (

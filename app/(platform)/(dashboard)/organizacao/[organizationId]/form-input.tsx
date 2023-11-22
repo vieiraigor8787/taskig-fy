@@ -20,7 +20,6 @@ export const FormInput = ({ errors }: FormInputProps) => {
         name="title"
         required
         placeholder="Nome do board"
-        className="border-black border p-1"
         disabled={pending}
       />
       {errors?.title ? (

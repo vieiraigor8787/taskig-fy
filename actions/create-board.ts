@@ -1,9 +1,9 @@
 'use server'
 import { z } from 'zod'
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
 import { db } from '@/lib/db'
-import { revalidatePath } from 'next/cache'
 
 export type State = {
   errors?: {

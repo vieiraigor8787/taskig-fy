@@ -15,6 +15,7 @@ import { FormSubmit } from './FormButton'
 import { X } from 'lucide-react'
 import { Button } from '../ui/button'
 import { toast } from 'sonner'
+import { FormPicker } from './FormPicker'
 
 interface FormPopoverProps {
   children: React.ReactNode
@@ -31,10 +32,10 @@ export const FormPopover = ({
 }: FormPopoverProps) => {
   const { execute, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
-      toast.success("Board criado")
+      toast.success('Board criado')
     },
     onError: (error) => {
-      console.log({error})
+      console.log({ error })
       toast.error(error)
     },
   })
@@ -67,6 +68,7 @@ export const FormPopover = ({
         </PopoverClose>
         <form action={onSubmit} className="space-y-4">
           <div className="space-y-4">
+            <FormPicker id="ssd" errors={fieldErrors} />
             <FormInput
               id="title"
               label="Nome do board"

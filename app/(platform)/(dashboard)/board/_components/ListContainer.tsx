@@ -1,9 +1,9 @@
 'use client'
 
-import { List } from '@prisma/client'
+import { ListWithCards } from '@/types'
 
 interface ListContainerProps {
-  data: List[]
+  data: ListWithCards[]
   boardId: string
 }
 

@@ -64,7 +64,7 @@ export const FormPopover = ({
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
           Criar novo board
         </div>
-        <PopoverClose ref={closeRef}>
+        <PopoverClose ref={closeRef} asChild>
           <Button
             className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600"
             variant="ghost"

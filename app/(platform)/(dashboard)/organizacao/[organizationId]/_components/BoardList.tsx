@@ -1,4 +1,3 @@
-'use client'
 import Link from 'next/link'
 import { HelpCircle, User2 } from 'lucide-react'
 import { redirect } from 'next/navigation'
@@ -6,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs'
 
 import { FormPopover } from '@/components/form/FormPopover'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Hint } from '@/components/hint'
 import { db } from '@/lib/db'
 
@@ -57,6 +57,21 @@ export const BoardList = async () => {
           </div>
         </FormPopover>
       </div>
+    </div>
+  )
+}
+
+BoardList.Skeleton = function SkeletonBoardList() {
+  return (
+    <div className="grid gird-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <Skeleton className="aspect-video h-full w-full p-2" />
+      <Skeleton className="aspect-video h-full w-full p-2" />
+      <Skeleton className="aspect-video h-full w-full p-2" />
+      <Skeleton className="aspect-video h-full w-full p-2" />
+      <Skeleton className="aspect-video h-full w-full p-2" />
+      <Skeleton className="aspect-video h-full w-full p-2" />
+      <Skeleton className="aspect-video h-full w-full p-2" />
+      <Skeleton className="aspect-video h-full w-full p-2" />
     </div>
   )
 }

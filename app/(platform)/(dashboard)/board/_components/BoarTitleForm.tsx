@@ -16,11 +16,12 @@ interface BoardTitleFormProps {
 export const BoardTitleForm = ({ data }: BoardTitleFormProps) => {
   const { execute } = useAction(updateBoard, {
     onSuccess: (data) => {
-      toast.success(`Board "${data.title}" atualizado.`)
-      setTitle(data.title)
-      disabledEditing()
+      if (title !== data.title) {
+        toast.success(`Board "${data.title}" atualizado.`)
+        setTitle(data.title)
+        disabledEditing()
+      }
     },
-
     onError: (error) => {
       toast.error(error)
     },

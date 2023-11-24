@@ -1,10 +1,13 @@
 'use client'
 
 import { ElementRef, useRef, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useEventListener, useOnClickOutside } from 'usehooks-ts'
 import { Plus, X } from 'lucide-react'
+import { toast } from 'sonner'
 
+import { useAction } from '@/hooks/use-action'
+import { createList } from '@/actions/create-list'
 import { FormInput } from '@/components/form/FormInput'
 import { FormSubmit } from '@/components/form/FormButton'
 import { Button } from '@/components/ui/button'
@@ -13,6 +16,7 @@ import { ListWrapper } from './ListWrapper'
 
 export const ListForm = () => {
   const params = useParams()
+  const router = useRouter()
 
   const [isEditing, setIsEditing] = useState(false)
 
@@ -30,6 +34,17 @@ export const ListForm = () => {
     setIsEditing(false)
   }
 
+  const { fieldErrors, execute } = useAction(createList, {
+    onSuccess: (data) => {
+      toast.success(`Lista "${data.title}" criada.`)
+      disableEditing()
+      router.refresh()
+    },
+    onError: (err) => {
+      toast.error(err)
+    },
+  })
+
   const onKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') disableEditing()
   }
@@ -37,15 +52,24 @@ export const ListForm = () => {
   useEventListener('keydown', onKeyDown)
   useOnClickOutside(formRef, disableEditing)
 
+  const onSubmit = (formData: FormData) => {
+    const title = formData.get('title') as string
+    const boardId = formData.get('boardId') as string
+
+    execute({ title, boardId })
+  }
+
   if (isEditing) {
     return (
       <ListWrapper>
         <form
+          action={onSubmit}
           ref={formRef}
           className="w-full p-3 rounded-mdf bg-white space-y-4 shadow-md"
         >
           <FormInput
             ref={inputRef}
+            errors={fieldErrors}
             id="title"
             className="text-sm px-2 py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transperent"
             placeholder="Insira um nome"

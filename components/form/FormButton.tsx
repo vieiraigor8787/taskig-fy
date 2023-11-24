@@ -20,7 +20,7 @@ interface FormSubmitProps {
 }
 
 export const FormSubmit = ({
-  variant,
+  variant = 'primary',
   disabled,
   className,
   children,

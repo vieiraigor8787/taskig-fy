@@ -3,21 +3,37 @@ import { revalidatePath } from 'next/cache'
 
 import { auth } from '@clerk/nextjs'
 import { db } from '@/lib/db'
+import { CreateSafeAction } from '@/lib/create-safe-action'
 
 import { InputType, ReturnType } from './types'
-import { CreateSafeAction } from '@/lib/create-safe-action'
 import { CreateBoard } from './schema'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { userId } = auth()
+  const { userId, orgId } = auth()
 
-  if (!userId) {
+  if (!userId || !orgId) {
     return {
       error: 'Usuário não autorizado',
     }
   }
 
-  const { title } = data
+  const { title, image } = data
+  console.log(data)
+
+  const [imageId, imageThumbUrl, imageFullUrl, imageUserName, imageLinkHTML] =
+    image.split('|')
+
+  if (
+    !imageId ||
+    !imageFullUrl ||
+    !imageUserName ||
+    !imageLinkHTML ||
+    !imageThumbUrl
+  ) {
+    return {
+      error: 'Campos não preenchidos.',
+    }
+  }
 
   let board
 
@@ -25,6 +41,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     board = await db.board.create({
       data: {
         title,
+        orgId,
+        imageId,
+        imageFullUrl,
+        imageLinkHTML,
+        imageThumbUrl,
+        imageUserName,
       },
     })
   } catch (error) {

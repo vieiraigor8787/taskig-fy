@@ -1,20 +1,22 @@
 'use client'
 
+import { ElementRef, useRef } from 'react'
+import { toast } from 'sonner'
+import { X } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+
 import { createBoard } from '@/actions/create-board'
 import { useAction } from '@/hooks/use-action'
-
 import {
   Popover,
   PopoverClose,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { Button } from '@/components/ui/button'
 
 import { FormInput } from './FormInput'
 import { FormSubmit } from './FormButton'
-import { X } from 'lucide-react'
-import { Button } from '../ui/button'
-import { toast } from 'sonner'
 import { FormPicker } from './FormPicker'
 
 interface FormPopoverProps {
@@ -30,20 +32,24 @@ export const FormPopover = ({
   align,
   children,
 }: FormPopoverProps) => {
+  const router = useRouter()
+  const closeRef = useRef<ElementRef<'button'>>(null)
+
   const { execute, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
       toast.success('Board criado')
+      closeRef.current?.click()
+      router.push(`/board/${data.id}`)
     },
     onError: (error) => {
-      console.log({ error })
       toast.error(error)
     },
   })
 
   const onSubmit = (formData: FormData) => {
     const title = formData.get('title') as string
-
-    execute({ title })
+    const image = formData.get('image') as string
+    execute({ title, image })
   }
 
   return (
@@ -58,7 +64,7 @@ export const FormPopover = ({
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
           Criar novo board
         </div>
-        <PopoverClose>
+        <PopoverClose ref={closeRef}>
           <Button
             className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600"
             variant="ghost"
@@ -68,7 +74,7 @@ export const FormPopover = ({
         </PopoverClose>
         <form action={onSubmit} className="space-y-4">
           <div className="space-y-4">
-            <FormPicker id="ssd" errors={fieldErrors} />
+            <FormPicker id="image" errors={fieldErrors} />
             <FormInput
               id="title"
               label="Nome do board"

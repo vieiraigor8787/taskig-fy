@@ -18,7 +18,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 
   const { title, image } = data
-  console.log(data)
 
   const [imageId, imageThumbUrl, imageFullUrl, imageUserName, imageLinkHTML] =
     image.split('|')

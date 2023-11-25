@@ -10,6 +10,8 @@ import { FormInput } from '@/components/form/FormInput'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 
+import { ListOptions } from './ListOptions'
+
 interface ListHeaderProps {
   data: List
 }
@@ -90,6 +92,7 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
           {title}
         </div>
       )}
+      <ListOptions data={data} onAddCard={() => {}} />
     </div>
   )
 }

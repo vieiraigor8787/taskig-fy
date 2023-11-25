@@ -44,9 +44,11 @@ export const BoardTitleForm = ({ data }: BoardTitleFormProps) => {
 
   const onSubmit = (formData: FormData) => {
     const title = formData.get('title') as string
-    if (title !== data.title) {
-      execute({ title, id: data.id })
+
+    if (title === data.title) {
+      return disabledEditing()
     }
+    execute({ title, id: data.id })
   }
 
   const onBlur = () => {

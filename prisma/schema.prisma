@@ -55,6 +55,7 @@ model Card {
   @@index([listId])
 }
 
+//activity 
 enum ACTION {
   CREATE
   UPDATE

@@ -4,7 +4,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { useCardModal } from '@/hooks/use-card-modal'
 
 export const CardModal = () => {
-  const cardModal = useCardModal()
+  const id = useCardModal((state) => state.id)
   const isOpen = useCardModal((state) => state.isOpen)
   const onClose = useCardModal((state) => state.onClose)
 

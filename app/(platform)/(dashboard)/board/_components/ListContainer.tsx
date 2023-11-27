@@ -46,6 +46,67 @@ export const ListContainer = ({ data, boardId }: ListContainerProps) => {
       )
       setOrderedData(items)
     }
+
+    //movendo um card
+    if (type === 'card') {
+      let newOrderedData = [...orderedData]
+
+      //lista do remetente
+      const sourceList = newOrderedData.find(
+        (list) => list.id === source.droppableId
+      )
+
+      //lista de destino
+      const destList = newOrderedData.find(
+        (list) => list.id === destination.droppableId
+      )
+
+      if (!sourceList || !destList) return
+
+      //verifica se existem cartões na lista de remetente
+      if (!sourceList.cards) sourceList.cards = []
+
+      //verifica se existem cartões na lista de destino
+      if (!destList.cards) destList.cards = []
+
+      //movendo cartões na mesma lista
+      if (source.droppableId === destination.droppableId) {
+        const reorderedCards = reorder(
+          sourceList.cards,
+          source.index,
+          destination.index
+        )
+
+        reorderedCards.forEach((card, idx) => {
+          card.order = idx
+        })
+
+        sourceList.cards = reorderedCards
+
+        setOrderedData(newOrderedData)
+
+        //movendo card para outra lista
+      } else {
+        //removendo card da lista remetente
+        const [movedCard] = sourceList.cards.splice(source.index, 1)
+
+        //gravando novo id lista para o cartão de destino
+        movedCard.listId = destination.droppableId
+        //adiciona cartao na lista de destino
+        destList.cards.splice(destination.index, 0, movedCard)
+
+        sourceList.cards.forEach((card, indx) => {
+          card.order = indx
+        })
+
+        //atualizando orderm para cada card na lista de destino
+        destList.cards.forEach((card, i) => {
+          card.order = i
+        })
+
+        setOrderedData(newOrderedData)
+      }
+    }
   }
   return (
     <DragDropContext onDragEnd={onDragEnd}>

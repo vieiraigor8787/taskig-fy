@@ -67,7 +67,7 @@ export const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(
               'resize-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm',
               className
             )}
-            aria-aria-describedby={`${id}-error`}
+            aria-describedby={`${id}-error`}
             defaultValue={defaultValue}
           />
         </div>

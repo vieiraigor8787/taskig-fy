@@ -52,7 +52,7 @@ export const Header = ({ data }: HeaderProps) => {
   }
 
   return (
-    <div className="flex items-center gap-3 mb-6 w-full">
+    <div className="flex items-start gap-3 mb-6 w-full">
       <LayoutIcon className="w-5 h-5 mt-1 text-neutral-700" />
       <div className="w-full">
         <form action={onSubmit}>

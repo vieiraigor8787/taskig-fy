@@ -23,6 +23,8 @@ export async function GET(
       orderBy: { createdAt: 'desc' },
       take: 3,
     })
+
+    return NextResponse.json(auditLogs)
   } catch (error) {
     return new NextResponse('internal error', { status: 500 })
   }

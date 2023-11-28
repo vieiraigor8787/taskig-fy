@@ -83,6 +83,7 @@ model AuditLog {
   updatedAt DateTime @updatedAt
 }
 
+//stripe & board limit
 model OrgLimit {
   id    String @id @default(uuid())
   orgId String @unique

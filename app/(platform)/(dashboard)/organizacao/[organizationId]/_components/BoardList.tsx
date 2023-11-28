@@ -4,10 +4,13 @@ import { redirect } from 'next/navigation'
 
 import { auth } from '@clerk/nextjs'
 
+import { db } from '@/lib/db'
+import { getAvailableCount } from '@/lib/org-limit'
+import { MAX_FREE_BOARDS } from '@/constants/boards'
+
 import { FormPopover } from '@/components/form/FormPopover'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Hint } from '@/components/hint'
-import { db } from '@/lib/db'
 
 export const BoardList = async () => {
   const { orgId } = auth()
@@ -22,6 +25,8 @@ export const BoardList = async () => {
       createdAt: 'desc',
     },
   })
+
+  const availableCount = await getAvailableCount()
 
   return (
     <div className="space-y-4">
@@ -47,7 +52,9 @@ export const BoardList = async () => {
             className="aspect-video relative h-full w-full bg-muted rounded-sm flex flex-col gap-1 items-center justify-center hover:opacity-75 transition p-2"
           >
             <p className="text-sm">Criar novo board</p>
-            <span className="text-xs">5 restantes</span>
+            <span className="text-xs">
+              {`${MAX_FREE_BOARDS - availableCount}  restantes`}
+            </span>
             <Hint
               sideOffset={40}
               description={`Áreas de trabalho podem ter até 5 boards de forma gratuita`}

@@ -9,6 +9,7 @@ import { InputType, ReturnType } from './types'
 import { CreateBoard } from './schema'
 import { createAuditLog } from '@/lib/create-audit-log'
 import { ACTION, ENTITY_TYPE } from '@prisma/client'
+import { hasAvailableCount, incrementAvailableCount } from '@/lib/org-limit'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId, orgId } = auth()
@@ -18,7 +19,12 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       error: 'Usuário não autorizado',
     }
   }
-
+  const canCreate = await hasAvailableCount()
+  if (!canCreate) {
+    return {
+      error: 'Você precisa assinar o plano pró para criar mais boards.',
+    }
+  }
   const { title, image } = data
 
   const [imageId, imageThumbUrl, imageFullUrl, imageUserName, imageLinkHTML] =
@@ -50,6 +56,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         imageUserName,
       },
     })
+
+    await incrementAvailableCount()
 
     await createAuditLog({
       entityTitle: board.title,

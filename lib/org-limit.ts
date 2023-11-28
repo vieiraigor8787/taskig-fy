@@ -1,17 +1,17 @@
 import { auth } from '@clerk/nextjs'
 
+import { db } from '@/lib/db'
 import { MAX_FREE_BOARDS } from '@/constants/boards'
-import { db } from './db'
 
 export const incrementAvailableCount = async () => {
   const { orgId } = auth()
 
-  if (!orgId) throw new Error('Não autorizado')
+  if (!orgId) {
+    throw new Error('Unauthorized')
+  }
 
   const orgLimit = await db.orgLimit.findUnique({
-    where: {
-      orgId,
-    },
+    where: { orgId },
   })
 
   if (orgLimit) {
@@ -26,15 +26,15 @@ export const incrementAvailableCount = async () => {
   }
 }
 
-export const decrementAvailableCount = async () => {
+export const decreaseAvailableCount = async () => {
   const { orgId } = auth()
 
-  if (!orgId) throw new Error('Não autorizado')
+  if (!orgId) {
+    throw new Error('Unauthorized')
+  }
 
   const orgLimit = await db.orgLimit.findUnique({
-    where: {
-      orgId,
-    },
+    where: { orgId },
   })
 
   if (orgLimit) {
@@ -52,12 +52,12 @@ export const decrementAvailableCount = async () => {
 export const hasAvailableCount = async () => {
   const { orgId } = auth()
 
-  if (!orgId) throw new Error('Não autorizado')
+  if (!orgId) {
+    throw new Error('Unauthorized')
+  }
 
   const orgLimit = await db.orgLimit.findUnique({
-    where: {
-      orgId,
-    },
+    where: { orgId },
   })
 
   if (!orgLimit || orgLimit.count < MAX_FREE_BOARDS) {
@@ -67,19 +67,20 @@ export const hasAvailableCount = async () => {
   }
 }
 
-export const getAvailabelCount = async () => {
+export const getAvailableCount = async () => {
   const { orgId } = auth()
 
-  if (!orgId) return 0
+  if (!orgId) {
+    return 0
+  }
 
   const orgLimit = await db.orgLimit.findUnique({
-    where: {
-      orgId,
-    },
+    where: { orgId },
   })
+
   if (!orgLimit) {
     return 0
-  } else {
-    return orgLimit.count
   }
+
+  return orgLimit.count
 }

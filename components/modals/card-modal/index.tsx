@@ -27,7 +27,6 @@ export const CardModal = () => {
     queryKey: ['card-logs', id],
     queryFn: () => fetcher(`/api/cards/${id}/logs`),
   })
-  console.log(auditLogsData, 'aiiasd')
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

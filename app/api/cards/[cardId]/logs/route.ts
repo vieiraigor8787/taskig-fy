@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server'
 import { ENTITY_TYPE } from '@prisma/client'
 import { auth } from '@clerk/nextjs'
 
 import { db } from '@/lib/db'
+import { NextResponse } from 'next/server'
 
 export async function GET(
   request: Request,
@@ -11,7 +11,7 @@ export async function GET(
   try {
     const { orgId, user } = auth()
 
-    if (!orgId || !user) {
+    if (!orgId) {
       return new NextResponse('Usuário não autorizado', { status: 401 })
     }
 
@@ -24,7 +24,6 @@ export async function GET(
       orderBy: { createdAt: 'desc' },
       take: 3,
     })
-
     return NextResponse.json(auditLogs)
   } catch (error) {
     return new NextResponse('internal error', { status: 500 })

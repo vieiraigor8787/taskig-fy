@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation'
 
 import { createBoard } from '@/actions/create-board'
 import { useAction } from '@/hooks/use-action'
+import { useProModal } from '@/hooks/use-pro-modal'
+
 import {
   Popover,
   PopoverClose,
@@ -35,6 +37,8 @@ export const FormPopover = ({
   const router = useRouter()
   const closeRef = useRef<ElementRef<'button'>>(null)
 
+  const proModal = useProModal()
+
   const { execute, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
       toast.success('Board criado')
@@ -43,6 +47,7 @@ export const FormPopover = ({
     },
     onError: (error) => {
       toast.error(error)
+      proModal.onOpen()
     },
   })
 

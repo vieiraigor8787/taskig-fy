@@ -5,14 +5,15 @@ import { auth } from '@clerk/nextjs'
 import { db } from '@/lib/db'
 
 export async function GET(
-  req: Request,
+  request: Request,
   { params }: { params: { cardId: string } }
 ) {
   try {
     const { orgId, user } = auth()
 
-    if (!orgId || !user)
-      throw new NextResponse('Usuário não autorizado', { status: 401 })
+    if (!orgId || !user) {
+      return new NextResponse('Usuário não autorizado', { status: 401 })
+    }
 
     const auditLogs = await db.auditLog.findMany({
       where: {

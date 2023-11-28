@@ -15,7 +15,9 @@ export const createAuditLog = async (props: Props) => {
     const { orgId } = auth()
     const user = await currentUser()
 
-    if (!orgId || !user) throw new Error('Usuário não encontrado')
+    if (!orgId || !user) {
+      throw new Error('Usuário não encontrado')
+    }
 
     const { entityTitle, entityType, entityId, action } = props
 
@@ -31,5 +33,7 @@ export const createAuditLog = async (props: Props) => {
         userName: user?.firstName + ' ' + user?.lastName,
       },
     })
-  } catch (error) {}
+  } catch (error) {
+    console.log('[AUDIT_LOG_ERROR]', error)
+  }
 }

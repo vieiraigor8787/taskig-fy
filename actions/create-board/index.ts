@@ -2,13 +2,14 @@
 import { revalidatePath } from 'next/cache'
 
 import { auth } from '@clerk/nextjs'
+import { ACTION, ENTITY_TYPE } from '@prisma/client'
+
 import { db } from '@/lib/db'
 import { CreateSafeAction } from '@/lib/create-safe-action'
-
 import { InputType, ReturnType } from './types'
 import { CreateBoard } from './schema'
 import { createAuditLog } from '@/lib/create-audit-log'
-import { ACTION, ENTITY_TYPE } from '@prisma/client'
+import { checkSubscription } from '@/lib/subscription'
 import { hasAvailableCount, incrementAvailableCount } from '@/lib/org-limit'
 
 const handler = async (data: InputType): Promise<ReturnType> => {
@@ -20,7 +21,9 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     }
   }
   const canCreate = await hasAvailableCount()
-  if (!canCreate) {
+  const isPro = await checkSubscription()
+
+  if (!canCreate && !isPro) {
     return {
       error: 'Você precisa assinar o plano pró para criar mais boards.',
     }
@@ -57,7 +60,9 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       },
     })
 
-    await incrementAvailableCount()
+    if (isPro) {
+      await incrementAvailableCount()
+    }
 
     await createAuditLog({
       entityTitle: board.title,

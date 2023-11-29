@@ -6,6 +6,7 @@ import { auth } from '@clerk/nextjs'
 
 import { db } from '@/lib/db'
 import { getAvailableCount } from '@/lib/org-limit'
+import { checkSubscription } from '@/lib/subscription'
 import { MAX_FREE_BOARDS } from '@/constants/boards'
 
 import { FormPopover } from '@/components/form/FormPopover'
@@ -27,6 +28,7 @@ export const BoardList = async () => {
   })
 
   const availableCount = await getAvailableCount()
+  const isPro = await checkSubscription()
 
   return (
     <div className="space-y-4">
@@ -53,7 +55,9 @@ export const BoardList = async () => {
           >
             <p className="text-sm">Criar novo board</p>
             <span className="text-xs">
-              {`${MAX_FREE_BOARDS - availableCount}  restantes`}
+              {isPro
+                ? 'Ilimitado'
+                : `${MAX_FREE_BOARDS - availableCount} restantes`}
             </span>
             <Hint
               sideOffset={40}
